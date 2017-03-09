@@ -24,7 +24,7 @@
 # Check- if the sftp_server device is the primary interface (node's default
 # interface in ohai), raise an error so we don't clobber that.
 
-raise 'sftp_server device is default interface. Exiting.' if (
+raise 'sftp_server device cannot run on default interface. Exiting.' if (
   node['sftp_server']['device'] == node['network']['default_interface']
 )
 
@@ -32,8 +32,9 @@ raise 'sftp_server device is default interface. Exiting.' if (
 ifconfig node['sftp_server']['inet_addr'] do
   device node['sftp_server']['device']
   inet_addr node['sftp_server']['inet_addr']
-  network node['sftp_server']['network']
+  mask node['sftp_server']['netmask']
   onboot 'yes'
   onparent 'yes'
   action :add
 end
+
