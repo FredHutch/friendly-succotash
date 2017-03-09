@@ -5,11 +5,13 @@ license 'all_rights'
 description 'Installs/Configures friendly-succotash'
 long_description 'Installs/Configures friendly-succotash'
 version '0.1.0'
+issues_url 'fill this in'
+source_url 'and this too'
 
-# If you upload to Supermarket you should set this so your cookbook
-# gets a `View Issues` link
-# issues_url 'https://github.com/<insert_org_here>/friendly-succotash/issues' if respond_to?(:issues_url)
+depends 'openssh', '~> 2.1'
 
-# If you upload to Supermarket you should set this so your cookbook
-# gets a `View Source` link
-# source_url 'https://github.com/<insert_org_here>/friendly-succotash' if respond_to?(:source_url)
+attribute 'sftp-server/address',
+          'display_name' => 'IP/hostname for sftp server',
+          'type'         => 'string',
+          'required'     => 'required',
+          'recipes'      => ['friendly-succotash::sftp_server']
