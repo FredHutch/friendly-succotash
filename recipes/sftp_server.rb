@@ -24,8 +24,11 @@
 # Check- if the sftp_server device is the primary interface (node's default
 # interface in ohai), raise an error so we don't clobber that.
 
+default_interface = node['network']['default_interface']
+default_interface_ip = node['network']['interfaces'][default_interface]['addresses'].select {|k,v| v['family'] == 'inet'}.keys[0]
+
 raise 'sftp_server device cannot run on default interface. Exiting.' if (
-  node['sftp_server']['device'] == node['network']['default_interface']
+  node['sftp_server']['device'] == default_interface
 )
 
 # Configure sftp interface
@@ -37,4 +40,8 @@ ifconfig node['sftp_server']['inet_addr'] do
   onparent 'yes'
   action :add
 end
+
+# reconfigure host openssh to listen only on default address
+node.override['openssh']['server']['listen_address'] = default_interface_ip
+include_recipe 'openssh'
 
