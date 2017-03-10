@@ -16,20 +16,20 @@
 # the sftp server (the attribute `node['sftp_server']['inet_addr']`), and put
 # the remaining IP addresses in `sshd_config` as the `ListenAddress` for the
 # primary, shell access, openssh server.
-#
-# This recipe will throw an error if the IP address indicated for the sftp
-# server would leave only the loopback address for the shell openssh server
-#
 
 # Check- if the sftp_server device is the primary interface (node's default
 # interface in ohai), raise an error so we don't clobber that.
 
 default_interface = node['network']['default_interface']
-default_interface_ip = node['network']['interfaces'][default_interface]['addresses'].select {|k,v| v['family'] == 'inet'}.keys[0]
 
-raise 'sftp_server device cannot run on default interface. Exiting.' if (
+raise 'sftp_server device cannot run on default interface. Exiting.' if \
   node['sftp_server']['device'] == default_interface
-)
+
+default_interface_addrs = \
+  node['network']['interfaces'][default_interface]['addresses']
+default_interface_ip = \
+  default_interface_addrs.select { |_k, v| v['family'] == 'inet' }.keys[0]
+node.override['openssh']['server']['listen_address'] = default_interface_ip
 
 # Configure sftp interface
 ifconfig node['sftp_server']['inet_addr'] do
@@ -42,6 +42,4 @@ ifconfig node['sftp_server']['inet_addr'] do
 end
 
 # reconfigure host openssh to listen only on default address
-node.override['openssh']['server']['listen_address'] = default_interface_ip
 include_recipe 'openssh'
-
