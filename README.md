@@ -1,4 +1,4 @@
-# friendly-succotash
+# `sti_crc_method_comparison` Data Sharing Host
 
 Configure a system for sharing microbiome data across multiple institutions.
 

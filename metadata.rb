@@ -1,12 +1,12 @@
-name 'friendly-succotash'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
-license 'all_rights'
-description 'Installs/Configures friendly-succotash'
-long_description 'Installs/Configures friendly-succotash'
+name 'sti_crc_method_comparison'
+maintainer 'Michael Gutteridge, Scientific Computing, Fred Hutchinson CRC'
+maintainer_email 'mrg@fredhutch.org'
+license 'mit'
+description 'Configure data-sharing gateway fo sti_crc_method_comparison'
+long_description ''
 version '0.1.0'
-issues_url 'fill this in'
-source_url 'and this too'
+issues_url 'https://github.com/' if respond_to?(:issues_url)
+source_url 'https://github.com/' if respond_to?(:source_url)
 
 depends 'openssh', '~> 2.1'
 
