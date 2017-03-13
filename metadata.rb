@@ -1,15 +1,10 @@
-name 'friendly-succotash'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
-license 'all_rights'
-description 'Installs/Configures friendly-succotash'
-long_description 'Installs/Configures friendly-succotash'
+name 'sti_crc_method_comparison'
+maintainer 'Michael Gutteridge, Scientific Computing, Fred Hutchinson CRC'
+maintainer_email 'mrg@fredhutch.org'
+license 'mit'
+description 'Configure data-sharing gateway fo sti_crc_method_comparison'
+long_description ''
 version '0.1.0'
 
-# If you upload to Supermarket you should set this so your cookbook
-# gets a `View Issues` link
-# issues_url 'https://github.com/<insert_org_here>/friendly-succotash/issues' if respond_to?(:issues_url)
-
-# If you upload to Supermarket you should set this so your cookbook
-# gets a `View Source` link
-# source_url 'https://github.com/<insert_org_here>/friendly-succotash' if respond_to?(:source_url)
+issues_url 'https://github.com/' if respond_to?(:issues_url)
+source_url 'https://github.com/' if respond_to?(:source_url)
