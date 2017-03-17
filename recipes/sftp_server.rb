@@ -25,12 +25,6 @@ default_interface = node['network']['default_interface']
 raise 'sftp_server device cannot run on default interface. Exiting.' if \
   node['sftp_server']['device'] == default_interface
 
-default_interface_addrs = \
-  node['network']['interfaces'][default_interface]['addresses']
-default_interface_ip = \
-  default_interface_addrs.select { |_k, v| v['family'] == 'inet' }.keys[0]
-node.override['openssh']['server']['listen_address'] = default_interface_ip
-
 # Configure sftp interface
 ifconfig node['sftp_server']['inet_addr'] do
   device node['sftp_server']['device']
@@ -42,4 +36,16 @@ ifconfig node['sftp_server']['inet_addr'] do
 end
 
 # reconfigure host openssh to listen only on default address
+
+# Find ip address assigned to default interface by searching addresses
+# configured to the device for an `inet` address
+
+default_interface_addrs = \
+  node['network']['interfaces'][default_interface]['addresses']
+default_interface_ip = \
+  default_interface_addrs.select { |_k, v| v['family'] == 'inet' }.keys[0]
+
+# set openssh listenaddress to this IP address
+node.override['openssh']['server']['listen_address'] = default_interface_ip
+
 include_recipe 'openssh'
