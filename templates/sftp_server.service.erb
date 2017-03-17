@@ -1,0 +1,17 @@
+[Unit]
+Description=OpenSSH SFTP-Only Service
+After=network.target auditd.service
+
+[Service]
+EnvironmentFile=-/etc/default/sftp_server
+ExecStart=/usr/sbin/sshd -f $SFTP_CONFIG -D $SSHD_OPTS
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartPreventExitStatus=255
+Type=notify
+
+[Install]
+WantedBy=multi-user.target
+Alias=sftp_server.service
+

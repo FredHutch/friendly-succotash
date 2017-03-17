@@ -49,3 +49,44 @@ default_interface_ip = \
 node.override['openssh']['server']['listen_address'] = default_interface_ip
 
 include_recipe 'openssh'
+
+# Create configuration for an "alt-sftp" server
+#
+# this command will be used to install this as a service
+execute 'systemd-reload' do
+  command '/bin/systemctl daemon-reload'
+  action :nothing
+end
+
+# openssh config file enabling sftp only
+template node['sftp_server']['config'] do
+  owner 'root'
+  group 'root'
+  mode '0600'
+  source 'sshd_sftp_only_config.erb'
+  variables(
+    'sftp_server_address' => node['sftp_server']['inet_addr'],
+    'sftp_server_data_dir' => node['sftp_server']['data_dir']
+  )
+end
+
+# `defaults` file for this service
+template '/etc/default/sftp_server' do
+  owner 'root'
+  group 'root'
+  mode '0600'
+  source 'sftp_config.erb'
+  variables(
+    'config_file' => node['sftp_server']['config']
+  )
+end
+
+# systemd service file- reloads systemd on execution
+template '/lib/systemd/system/sftp_server.service' do
+  owner 'root'
+  group 'root'
+  mode '0644'
+  source 'sftp_server.service.erb'
+  notifies :run, 'execute[systemd-reload]', :immediately
+end
+
