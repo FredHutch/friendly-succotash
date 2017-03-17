@@ -14,4 +14,4 @@ attribute 'sftp-server/address',
           'display_name' => 'IP/hostname for sftp server',
           'type'         => 'string',
           'required'     => 'required',
-          'recipes'      => ['friendly-succotash::sftp_server']
+          'recipes'      => ['sti_crc_method_comparison::sftp_server']

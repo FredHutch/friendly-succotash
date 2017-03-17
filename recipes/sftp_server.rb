@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: friendly-succotash
+# Cookbook Name:: sti_crc_method_comparison
 # Recipe:: sftp_server
 #
 # Copyright (c) 2017 The Authors, All Rights Reserved.

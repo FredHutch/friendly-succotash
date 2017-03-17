@@ -1,12 +1,12 @@
 #
-# Cookbook Name:: friendly-succotash
+# Cookbook Name:: sti_crc_method_comparison
 # Spec:: default
 #
 # Copyright (c) 2017 The Authors, All Rights Reserved.
 
 require 'spec_helper'
 
-describe 'friendly-succotash::sftp-server' do
+describe 'sti_crc_method_comparison::sftp-server' do
   context 'When all attributes are default, on an unspecified platform' do
     let(:chef_run) do
       runner = ChefSpec::ServerRunner.new

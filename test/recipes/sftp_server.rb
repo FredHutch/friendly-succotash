@@ -1,6 +1,6 @@
 # # encoding: utf-8
 
-# Inspec test for recipe friendly-succotash::sftp-server
+# Inspec test for recipe sti_crc_method_comparison::sftp-server
 
 # The Inspec reference, with examples and extensive documentation, can be
 # found at https://docs.chef.io/inspec_reference.html
