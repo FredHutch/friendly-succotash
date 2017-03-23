@@ -56,6 +56,7 @@ include_recipe 'openssh'
 execute 'systemd-reload' do
   command '/bin/systemctl daemon-reload'
   action :nothing
+  notifies :run, 'execute[sftp-enable]', :immediately
 end
 
 # openssh config file enabling sftp only
@@ -90,3 +91,10 @@ template '/lib/systemd/system/sftp_server.service' do
   notifies :run, 'execute[systemd-reload]', :immediately
 end
 
+execute 'sftp-enable' do
+  command '/bin/systemctl enable sftp_server.service'
+end
+
+service 'sftpd.service' do
+  action :start
+end
