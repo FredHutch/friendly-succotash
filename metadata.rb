@@ -9,6 +9,7 @@ issues_url 'https://github.com/' if respond_to?(:issues_url)
 source_url 'https://github.com/' if respond_to?(:source_url)
 
 depends 'openssh', '~> 2.1'
+depends 'chef-vault'
 
 attribute 'sftp-server/address',
           'display_name' => 'IP/hostname for sftp server',
