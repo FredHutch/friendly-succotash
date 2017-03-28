@@ -73,6 +73,7 @@ template '/etc/default/sftp_server' do
   variables(
     'config_file' => configs['config']
   )
+  notifies :restart, 'service[sftpd.service]', :delayed
 end
 
 # systemd service file- reloads systemd on execution
