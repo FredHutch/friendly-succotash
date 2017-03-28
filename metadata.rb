@@ -4,7 +4,7 @@ maintainer_email 'mrg@fredhutch.org'
 license 'mit'
 description 'Configure data-sharing gateway fo sti_crc_method_comparison'
 long_description ''
-version '0.2.0'
+version '0.2.3'
 issues_url 'https://github.com/' if respond_to?(:issues_url)
 source_url 'https://github.com/' if respond_to?(:source_url)
 
