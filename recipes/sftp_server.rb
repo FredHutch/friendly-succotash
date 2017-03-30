@@ -85,6 +85,14 @@ template '/lib/systemd/system/sftp_server.service' do
   notifies :run, 'execute[systemd-reload]', :immediately
 end
 
+# create data directory
+directory configs['data_dir'] do
+  owner 'root'
+  group 'root'
+  mode 0x0755
+  recursive true
+end
+
 execute 'sftp-enable' do
   command '/bin/systemctl enable sftp_server.service'
 end

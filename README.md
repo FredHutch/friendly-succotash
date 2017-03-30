@@ -9,7 +9,7 @@ Configure a system for sharing microbiome data across multiple institutions.
  - use common tools for access, both upload and download
  - available from institutions external to the Center without
    requiring HutchNet IDs
- - Logging and auditing?
+ - institutions should only be able to see their own directory
 
 # Implementation Options
 
