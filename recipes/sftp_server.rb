@@ -89,7 +89,7 @@ end
 directory configs['data_dir'] do
   owner 'root'
   group 'root'
-  mode 0x0755
+  mode '0755'
   recursive true
 end
 
