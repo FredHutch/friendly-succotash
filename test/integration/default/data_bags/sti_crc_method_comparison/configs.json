@@ -4,5 +4,11 @@
   "network": "172.16.3.1",
   "netmask": "255.255.255.0",
   "data_dir": "/var/opt/sftp",
-  "config": "/etc/ssh/sftp_server"
+  "config": "/etc/ssh/sftp_server",
+  "mount": {
+    "path": "/server/path",
+    "user": "username",
+    "pass": "password1",
+    "wkgp": "workgroup"
+  }
 }
