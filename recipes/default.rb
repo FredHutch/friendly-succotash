@@ -41,7 +41,8 @@ mount_options = [
   'uid=root',
   'gid=root',
   'file_mode=0644',
-  'dir_mode=0755'
+  'dir_mode=0755',
+  'noperm'
 ]
 
 mount configs['data_dir'] do
