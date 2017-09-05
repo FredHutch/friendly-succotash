@@ -4,5 +4,5 @@ Subsystem sftp internal-sftp
 UsePAM yes
 X11Forwarding no
 AllowTCPForwarding no
-ChrootDirectory <%= @sftp_server_data_dir %>
+ChrootDirectory <%= @sftp_server_data_dir %>/%u
 ForceCommand internal-sftp

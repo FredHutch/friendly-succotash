@@ -41,19 +41,6 @@ ifconfig configs['inet_addr'] do
   action :add
 end
 
-# reconfigure host openssh to listen only on default address
-
-# Find ip address assigned to default interface by searching addresses
-# configured to the device for an `inet` address
-
-default_interface_addrs = \
-  node['network']['interfaces'][default_interface]['addresses']
-default_interface_ip = \
-  default_interface_addrs.select { |_k, v| v['family'] == 'inet' }.keys[0]
-
-# set openssh listenaddress to this IP address
-node.override['openssh']['server']['listen_address'] = default_interface_ip
-
 include_recipe 'openssh'
 
 # Create configuration for an "alt-sftp" server
@@ -86,6 +73,7 @@ template '/etc/default/sftp_server' do
   variables(
     'config_file' => configs['config']
   )
+  notifies :restart, 'service[sftpd.service]', :delayed
 end
 
 # systemd service file- reloads systemd on execution

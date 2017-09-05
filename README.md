@@ -1,74 +1,39 @@
-# `sti_crc_method_comparison` Data Sharing Host
+# Data Exchange Host
 
-Configure a system for sharing microbiome data across multiple institutions.
+## Purpose
 
-## Goals
+This cookbook configures a host for uploading non-confidential data from remote
+institutions for analysis at the Hutch.
 
-## Requirements:
+## Constraints
 
- - use common tools for access, both upload and download
- - available from institutions external to the Center without
-   requiring HutchNet IDs
- - Logging and auditing?
+ - The data is non-confidential (non-human control specimens), but remote
+   agents should not be able to see the uploads from other agents to ensure
+   blinding between remote sites.
+ - Accounts will be managed locally
 
-# Implementation Options
+## Implementation
 
-These are the two options that appear most viable at the moment.  Both are
-viable but each present different challenges for adoption.  Likely the biggest
-single differentiator between these two is the need for access via
-desktop GUI environments provided in Windows and OSX.
+The host's default (OS-configured) SSH server will be restricted to the host's
+default interface.  A second IP interface (by default configured as a
+subinterface on the default network device) is used for SFTP.  A second OpenSSH
+daemon is configured to listen on that second IP address- this OpenSSH daemon
+has been configured such that the only available subsystem is SFTP, thus no
+shell access via this interface.  Firewall rules thus only allow remote access
+to this second IP address on port 22.
 
-## sftp
+Further customizations are used to configure SFTP- the `chroot` directory is
+configured to use the incoming connection's username, appending it to the root
+upload directory.  This directory needs to be configured as owned by root, so a subdirectory under this (called `upload`) is created with permissions such that the connecting account can read and write inside this directory.
 
-Using sftp is attractive as it uses a commonly available and robust software
-suite (ssh) using common metaphors for accessing data (i.e. the FTP command
-set).
+- `<data directory>`: the top-level directory for uploading data. Owned by root.
+- `<data directory>/<username>`: the chroot directory for the upload account.
+  Owned by root, no write access for others
+- `<data directory>/<username>/uploads`: the chroot directory for the upload
+  account.  Owned by the upload account, mode 0755
 
-There is a challenge in implementing this at the Hutch as providing sftp
-implies shell access which is not something that is viewed positively by the
-engineering and security teams.  Their preference is that remote login access
-be limited to VPN or a single ssh server.
-
-This can be addressed by removing login capabilities from the ssh server- this
-would be done by restricting the enabled ssh subsystems to the sftp server
-only.  However, this presents a management challenge as administrators and
-managers require shell access via ssh for thier activities.
-
-While it is possible to limit subsystems via users and/or groups, it is likely
-simplest to run two SSH servers- one providing the usual shell access required
-by admins and application managers and another server restricted to provide
-/only/ sftp services.
-
-One option here would be running a second SSH server on an alternate port for
-SFTP access.  This is somewhat undesirable as application users must change the
-behavior of their clients in unaccustomed ways.
-
-Another option would be to assign two IP addresses to the host providing the
-service and have one SSH server provide (only) sftp services via the first and
-another SSH server providing shell services on the second.  This allows those
-accessing services on the host to use the default SSH client configuration.
-Alternate host names are required, but careful name selection can easily
-mitigate that challenge.
-
-## WebDAV
-
-Providing webdav services uses the familiar HTTP protocol which is rather
-better understood by the engineering and security communities for external
-access.  In this configuration, the host would have an HTTP server (likely
-Apache2) with the required module enabled to allow file upload and download via
-the DAV protocol.
-
-This has one advantage over sftp in that the WebDAV protocol enables native
-client access via the GUI tools found in Windows (Windows Exporer), OSX
-(Finder), and Linux (Nautilus et alia).  Users need only mount the remote host
-using these tools and the files will then be available via familiar graphical
-interfaces.
-
-However, on the command line, use is less certain.  Tools for command line
-access in Windows and OSX have not been researched.  The primary tool for Linux
-hosts would be cadaver which is currently not installed on the SciComp hosts.
-While adding this to the SciComp environment is an easily completed change,
-adding required tools to hosts at collaborating institutions may not be as
-straight forward.  Though these are "user-land" tools which are typically low
-impact and easily added to an institution's toolchain.
+As this data needs to be uploaded to networked storage, a subdirectory is
+mounted via SMB to the location indicated by `<data directory>`.  This mount
+will use a service account such that the uploaded data on the server will have
+permissions allowing Hutch staff to manage this data.
 
