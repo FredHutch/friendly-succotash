@@ -20,6 +20,7 @@
 # Check- if the sftp_server device is the primary interface (node's default
 # interface in ohai), raise an error so we don't clobber that.
 
+accounts = chef_vault_item('sti_crc_method_comparison', 'accounts')
 configs = chef_vault_item('sti_crc_method_comparison', 'configs')
 
 # Default device sub-interface on host default interface if unset
@@ -59,6 +60,7 @@ template configs['config'] do
   mode '0600'
   source 'sshd_sftp_only_config.erb'
   variables(
+    'accounts' => accounts.keys,
     'sftp_server_address' => configs['inet_addr'],
     'sftp_server_data_dir' => configs['data_dir']
   )
