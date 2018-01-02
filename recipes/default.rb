@@ -5,10 +5,10 @@
 # Copyright (c) 2017 The Authors, All Rights Reserved.
 
 package [
-    'samba-common',
-    'samba-common-bin',
-    'samba-libs',
-    'cifs-utils'
+  'samba-common',
+  'samba-common-bin',
+  'samba-libs',
+  'cifs-utils'
 ]
 
 include_recipe 'chef-vault::default'
